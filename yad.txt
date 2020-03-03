@@ -1,0 +1,93 @@
+#! /bin/bash
+
+inside() {
+   yad --text="Nom de package :- $(dpkg -S coreutils)" --title="Nom de package"
+    echo ">>>>> Afficher le nom de package <<<<<"
+    echo "====================================="
+    echo "      Nom de package :- $(dpkg -S coreutils)" 
+  
+          }
+list()    {
+    yad --text="Liste des composans d'un package :- $(dpkg -L coreutils)" --title="Liste des composans d'un package"
+    echo ">>>>>    Lister les composants d'un package   <<<<<"
+    echo "====================================="
+    echo "        Liste des composans d'un package :- $(dpkg -L coreutils)"
+
+          }
+desc()    {
+     yad --text="Description du package :- $(dpkg -p coreutils)" --title="Description du package"
+    echo ">>>>>   Afficher une description du package   <<<<<"
+    echo "====================================="
+    echo "        Afficher une description du package :- $(dpkg -p coreutils)"
+
+          }
+mise()    {
+     yad --text="Mise a jour de package :- $(sudo apt-get build-dep coreutils)" --title="Mise a jour de package"
+    echo ">>>>>   Mise a jour de package   <<<<<"
+    echo "====================================="
+    echo "        Mise a jour de package :- $(sudo apt-get build-dep coreutils)"
+
+          }
+remove()  {
+    yad --text="Supprimer un package :- $(dpkg -r  coreutils)" --title="Supprimer un package"
+    echo ">>>>>   Supprimer un package   <<<<<"
+    echo "====================================="
+    echo "        Supprimer un package :- $(dpkg -r  coreutils)"
+
+          }
+list1()   {
+     yad --text="Liste des packages can be upgraded :- $(apt list --upgradable)" --title="Liste des packages can be upgraded"
+    echo ">>>>>   Liste des packages can be upgraded   <<<<<"
+    echo "====================================="
+    echo "        Liste des packages can be upgraded :- $(apt list --upgradable)"
+
+          }
+nb(){
+yad --text="Le nombre de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W | wc -l)" --title="Le nombre de packages installés"
+    echo ">>>>>   Calculer le nombre des packages installés   <<<<<"
+              echo "====================================="
+              echo "        Le nombre de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W | wc -l)"
+}
+cr(){
+yad --text="La liste de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W > packages_list.txt)" --title="La liste de packages installés"
+              echo ">>>>>   Creer une liste des packages installés   <<<<<"
+              echo "====================================="
+              echo "        La liste de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W > packages_list.txt)"
+}
+Help()    {
+              echo ">>>>>   Help  <<<<<"
+              echo "====================================="
+              echo "Package dont une commande/fichier fait partie : -inside"
+              echo "Lister les composants d'un package : -list"
+              echo "Afficher une description du package : -des"
+              echo "Enregistrer dans un fichier : -save"
+              echo "Mise a jour de package : -mise"
+              echo "Supprimer un package : -remove"
+              echo "liste des packages can be upgraded : -list1"
+              echo "le nombre de packages installés : -nb"
+              echo "creer une liste des packages installés : -cr"
+          }
+save()    {
+ 
+d=$(date +%F)
+apt list --installed > package-distribution-$d.txt
+          }
+
+
+export -f inside list desc mise remove list1 nb cr Help save
+
+
+
+
+yad --form --width=550 --title="Gestion De Package" --text="Choose a button :" \
+--field="Nom de package!$HOME/.icons/s1.png":fbtn "bash -c inside" \
+--field="Liste des composants d'un package!$HOME/.icons/s2.png":fbtn "bash -c list" \
+--field="Description de package!$HOME/.icons/s3.png":fbtn "bash -c desc" \
+--field="Mise a jour de package!$HOME/.icons/s4.png":fbtn "bash -c mise" \
+--field="Supprimer un package!$HOME/.icons/s5.png":fbtn "bash -c remove" \
+--field="Liste des packages can be upgraded!$HOME/.icons/s6.png":fbtn "bash -c list1" \
+--field="Le nombre de packages installés!$HOME/.icons/s7.png":fbtn "bash -c nb" \
+--field="Liste des packages installés!$HOME/.icons/s7.png":fbtn "bash -c cr" \
+--field="Help!$HOME/.icons/s8.png ":fbtn "bash -c Help" \
+--field="Save!$HOME/.icons/s9.png":fbtn "bash -c save" \
+--button=gtk-quit:1

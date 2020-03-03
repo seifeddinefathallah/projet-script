@@ -1,0 +1,129 @@
+#!/bin/bash
+
+HEIGHT=15
+WIDTH=40
+CHOICE_HEIGHT=7
+BACKTITLE="Application Gestion Package"
+TITLE="Menu"
+MENU="Enter a choice:"
+
+OPTIONS=(1 "Afficher le nom de package"
+         2 "Lister les composants d'un package"
+         3 "Afficher une description du package "
+         4 "Mise a jour de package"
+         5 "Supprimer un package"
+         6 "Liste des packages can be upgraded"
+         7 "Calculer le nombre des packages installées"
+         8 "Creer une liste des packages installés"
+         9 "Help"
+        10 "Save" 
+        11 "All")
+
+CHOICE=$(dialog --clear \
+                --backtitle "$BACKTITLE" \
+                --title "$TITLE" \
+              --menu "$MENU" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+"${OPTIONS[@]}" \
+  2>&1 >/dev/tty)
+clear
+        case $CHOICE in 
+       1)      echo ">>>>> Afficher le nom de package <<<<<"
+               echo "====================================="
+               echo "Afficher le nom de package :$(dpkg -S ls)"
+                ;;
+       2)      echo ">>>>>    Lister les composants d'un package   <<<<<"
+               echo "====================================="
+               echo "Lister les composants d'un package :$(dpkg -L coreutils)"
+                ;;
+       3)      echo ">>>>>   Afficher une description du package   <<<<<"
+               echo "====================================="
+               echo "Afficher une description du package :$(dpkg -p coreutils) "          
+                ;;
+       4)     echo ">>>>>   Mise a jour de package   <<<<<"
+              echo "====================================="
+              echo "        Mise a jour de package :- $(sudo apt-get build-dep coreutils)"
+                ;;
+       5)     echo ">>>>>   Supprimer un package   <<<<<"
+              echo "====================================="
+              echo "        Supprimer un package :- $(dpkg -r  coreutils)"
+                ;;
+       6)     echo ">>>>>   Liste des packages can be upgraded   <<<<<"
+              echo "====================================="
+              echo "        Liste des packages can be upgraded :- $(apt list --upgradable)"
+
+                ;;
+       7)     echo ">>>>>   Calculer le nombre des packages installés   <<<<<"
+              echo "====================================="
+              echo "        Le nombre de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W | wc -l)"
+               ;;
+        8)    echo ">>>>>   Creer une liste des packages installés   <<<<<"
+              echo "====================================="
+              echo "        La liste de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W > packages_list.txt)"
+               ;;
+        9)    echo ">>>>>   Help  <<<<<"
+              echo "====================================="
+              echo "Package dont une commande/fichier fait partie : -inside"
+              echo "Lister les composants d'un package : -list"
+              echo "Afficher une description du package : -des"
+              echo "Enregistrer dans un fichier : -save"
+              echo "Mise a jour de package : -mise"
+              echo "Supprimer un package : -remove"
+              echo "liste des packages can be upgraded : -list1"
+              echo "le nombre de packages installés : -nb"
+              echo "creer une liste des packages installés : -cr" 
+                ;;
+       10)     echo ">>>>>   Save   <<<<<"
+              echo "====================================="
+              d=$(date +%F)
+              apt list --installed > package-distribution-$d.txt
+                ;;
+        
+       11)     echo ">>>>>   All   <<<<<"
+               echo "====================================="
+               echo ">>>>> Afficher le nom de package <<<<<"
+               echo "====================================="
+               echo "Afficher le nom de package :$(dpkg -S ls)"
+               echo ">>>>>    Lister les composants d'un package   <<<<<"
+               echo "====================================="
+               echo "Lister les composants d'un package :$(dpkg -L coreutils)"
+               echo ">>>>>   Afficher une description du package   <<<<<"
+               echo "====================================="
+               echo "Afficher une description du package :$(dpkg -p coreutils) "          
+              echo ">>>>>   Mise a jour de package   <<<<<"
+              echo "====================================="
+              echo "        Mise a jour de package :- $(sudo apt-get build-dep coreutils)"
+              echo ">>>>>   Supprimer un package   <<<<<"
+              echo "====================================="
+              echo "        Supprimer un package :- $(dpkg -r  coreutils)"
+              echo ">>>>>   Liste des packages can be upgraded   <<<<<"
+              echo "====================================="
+              echo "        Liste des packages can be upgraded :- $(apt list --upgradable)"
+              echo ">>>>>   Calculer le nombre des packages installés   <<<<<"
+              echo "====================================="
+              echo "        Le nombre de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W | wc -l)"
+              echo ">>>>>   Creer une liste des packages installés   <<<<<"
+              echo "====================================="
+              echo "        La liste de packages installés :$(sudo dpkg-query -f '${binary:Package}\n' -W > packages_list.txt)"
+              echo ">>>>>   Help  <<<<<"
+              echo "====================================="
+              echo "Package dont une commande/fichier fait partie : -inside"
+              echo "Lister les composants d'un package : -list"
+              echo "Afficher une description du package : -des"
+              echo "Enregistrer dans un fichier : -save"
+              echo "Mise a jour de package : -mise"
+              echo "Supprimer un package : -remove"
+              echo "liste des packages can be upgraded : -list1"
+              echo "le nombre de packages installés : -nb"
+              echo "creer une liste des packages installés : -cr"
+              echo ">>>>>   Save   <<<<<"
+              echo "====================================="
+              d=$(date +%F)
+              echo "apt list --installed > package-distribution-$d.txt"
+                ;;
+            Cancel)
+                break
+                ;;
+        esac
+  
+

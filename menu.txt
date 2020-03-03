@@ -1,0 +1,103 @@
+#!/bin/bash
+source fct.sh
+main() 
+
+{
+    cd /
+
+    PS3="Enter a choice: "
+    select ch in "Afficher le nom de package" "Lister les composants d'un package" "Afficher une description du package " "Mise a jour de package" "Supprimer un package" "Liste des packages can be upgraded" "Help" "Save" All Cancel
+    do
+        case $ch in 
+            "Afficher le nom de package")
+                 inside 
+                ;;
+            "Lister les composants d'un package")
+                list
+                ;;
+            "Afficher une description du package ")
+                desc            # you need to fix the menu text
+                ;;
+	    "Help")
+                Help
+                ;;
+	    "Save")
+                save
+                ;;
+            "Mise a jour de package")
+               mise
+                ;;
+            "Supprimer un package")
+               remove
+                ;;
+            "Liste des packages can be upgraded")
+               list1
+                ;;
+            All)
+                inside
+                list
+                desc
+                mise
+                remove
+                list1
+                Help
+		save
+                ;;
+            Cancel)
+                break
+                ;;
+        esac
+    done
+}
+
+inside() {
+    echo ">>>>> Afficher le nom de package <<<<<"
+    echo "====================================="
+    echo "      Nom de package :- $(dpkg -S ls)" 
+  
+          }
+
+list()    {
+    echo ">>>>>    Lister les composants d'un package   <<<<<"
+    echo "====================================="
+    echo "        Liste des composans d'un package :- $(dpkg -L coreutils)"
+
+          }
+desc()    {
+    echo ">>>>>   Afficher une description du package   <<<<<"
+    echo "====================================="
+    echo "        Afficher une description du package :- $(dpkg -p coreutils)"
+
+          }
+mise()    {
+    echo ">>>>>   Mise a jour de package   <<<<<"
+    echo "====================================="
+    echo "        Mise a jour de package :- $(sudo apt-get build-dep coreutils)"
+
+          }
+remove()  {
+    echo ">>>>>   Supprimer un package   <<<<<"
+    echo "====================================="
+    echo "        Supprimer un package :- $(dpkg -r  coreutils)"
+
+          }
+list1()   {
+    echo ">>>>>   Liste des packages can be upgraded   <<<<<"
+    echo "====================================="
+    echo "        Liste des packages can be upgraded :- $(apt list --upgradable)"
+
+          }
+Help()    {
+echo "Package dont une commande/fichier fait partie : -inside"
+echo "Lister les composants d'un package : +list"
+echo "Afficher une description du package : -des"
+echo "Enregistrer dans un fichier : -save"
+echo "Mise a jour de package : -mise"
+echo "Supprimer un package : -remove"
+echo "liste des packages can be upgraded : -list1"
+          }
+save()    {
+d=$(date +%F)
+apt list --installed > package-distribution-$d.txt
+          }
+main "$@"
